@@ -1,0 +1,9 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.db
+sample_apks/*.apk
+SurakshaKavach_AI_R4C_Submission.zip

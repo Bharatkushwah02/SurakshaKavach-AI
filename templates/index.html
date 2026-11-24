@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SurakshaKavach AI | Rajasthan Police Cyber Crime & Threat Intelligence Platform</title>
+    <!-- Standalone Offline-Ready CSS Architecture (Zero CDN Dependency) -->
+    <style>
+        :root {
+            --bg-main: #070B14;
+            --card-bg: #0F172A;
+            --card-border: #334155;
+            --cyan-accent: #06B6D4;
+            --blue-accent: #2563EB;
+            --text-main: #E2E8F0;
+            --text-muted: #94A3B8;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --success: #10B981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
+        }
+
+        /* Top Header */
+        header {
+            background: #0B1120;
+            border-bottom: 1px solid #1E293B;
+            padding: 12px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .header-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #0891B2, #1D4ED8);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+        }
+        .brand-title {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #FFFFFF;
+        }
+        .brand-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .badge-rpa {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: #083344;
+            color: #22D3EE;
+            border: 1px solid #155E75;
+            font-weight: 700;
+            margin-left: 6px;
+        }
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #0F172A;
+            border: 1px solid #1E293B;
+            color: var(--text-muted);
+        }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 8px #10B981;
+        }
+
+        /* Main Container */
+        main {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 24px;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        /* Tabs */
+        .tabs-nav {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid #1E293B;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+        }
+        .tab-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.15s ease-in-out;
+            white-space: nowrap;
+        }
+        .tab-btn:hover {
+            color: #FFFFFF;
+            background: #1E293B;
+        }
+        .tab-btn.active {
+            background: rgba(6, 182, 212, 0.15);
+            border-color: rgba(6, 182, 212, 0.4);
+            color: #22D3EE;
+        }
+
+        /* Grid Layout */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 900px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cyber Cards */
+        .cyber-card {
+            background: #0F172A;
+            border: 1px solid #1E293B;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .card-desc {
+            font-size: 12px;
+            color: #CBD5E1;
+            margin-bottom: 16px;
+        }
+
+        /* Form Controls */
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #94A3B8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        textarea, input[type="text"], input[type="file"] {
+            width: 100%;
+            background: #070B14;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: #F8FAFC;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            transition: border 0.15s;
+        }
+        textarea:focus, input[type="text"]:focus {
+            border-color: #06B6D4;
+        }
+        textarea {
+            resize: vertical;
+        }
+
+        /* Action Buttons */
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #0891B2, #2563EB);
+            color: #FFFFFF;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(8, 145, 178, 0.3);
+            transition: opacity 0.15s;
+        }
+        .btn-primary:hover {
+            opacity: 0.95;
+        }
+
+        /* Preset Chips */
+        .presets-box {
+            margin-bottom: 16px;
+        }
+        .presets-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748B;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .chips-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .chip {
+            background: #1E293B;
+            border: 1px solid #334155;
+            color: #CBD5E1;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .chip:hover {
+            background: #334155;
+            color: #FFFFFF;
+        }
+        .chip-danger { color: #FCA5A5; border-color: rgba(239, 68, 68, 0.3); }
+        .chip-warning { color: #FCD34D; border-color: rgba(245, 158, 11, 0.3); }
+        .chip-info { color: #7DD3FC; border-color: rgba(14, 165, 233, 0.3); }
+        .chip-success { color: #86EFAC; border-color: rgba(16, 185, 129, 0.3); }
+
+        /* Badges */
+        .badge-high {
+            background: rgba(239, 68, 68, 0.2);
+            color: #F87171;
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 11px;
+        }
+        .badge-med {
+            background: rgba(245, 158, 11, 0.2);
+            color: #FBBF24;
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 11px;
+        }
+        .badge-low {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34D399;
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 11px;
+        }
+
+        /* Result Panel */
+        .placeholder-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
+            text-align: center;
+            color: #64748B;
+            gap: 12px;
+        }
+        .placeholder-icon {
+            font-size: 40px;
+            opacity: 0.5;
+        }
+        .reasons-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .reasons-list li {
+            font-size: 12px;
+            color: #CBD5E1;
+            padding-left: 14px;
+            position: relative;
+        }
+        .reasons-list li::before {
+            content: "•";
+            color: #EF4444;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* Tables */
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid #1E293B;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 12px;
+        }
+        th {
+            background: #0B1120;
+            color: #94A3B8;
+            padding: 10px 14px;
+            border-bottom: 1px solid #1E293B;
+            text-transform: uppercase;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #1E293B;
+            color: #CBD5E1;
+        }
+        tr:hover td {
+            background: rgba(30, 41, 59, 0.4);
+            cursor: pointer;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-card {
+            background: #0F172A;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 24px;
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #1E293B;
+            border: 1px solid #334155;
+            color: #94A3B8;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .close-btn:hover {
+            color: #FFF;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="brand">
+                <div class="brand-icon">🛡️</div>
+                <div>
+                    <div style="display: flex; align-items: center;">
+                        <span class="brand-title">SURAKSHA-KAVACH <span style="color: #06B6D4;">AI</span></span>
+                        <span class="badge-rpa">RPA R4C 2026</span>
+                    </div>
+                    <div class="brand-sub">Rajasthan Police Unified Threat & Forensic Triaging Platform</div>
+                </div>
+            </div>
+
+            <div class="status-pill">
+                <div class="pulse-dot"></div>
+                <span style="font-weight: 700; color: #10B981;">OFFLINE FORENSIC ENGINE READY</span>
+                <span style="color: #475569;">|</span>
+                <span>PS01 CYBER FRAUD</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main>
+        <!-- Tab Navigation -->
+        <div class="tabs-nav">
+            <button onclick="switchTab('tab-sms')" id="btn-tab-sms" class="tab-btn active">📩 SMS & Message Scanner</button>
+            <button onclick="switchTab('tab-url')" id="btn-tab-url" class="tab-btn">🔗 Phishing URL Inspector</button>
+            <button onclick="switchTab('tab-apk')" id="btn-tab-apk" class="tab-btn">📱 Android APK Extortion Scanner</button>
+            <button onclick="switchTab('tab-website')" id="btn-tab-website" class="tab-btn">🌐 Ponzi & Betting Portal Scanner</button>
+            <button onclick="switchTab('tab-dashboard')" id="btn-tab-dashboard" class="tab-btn">📂 Case Registry & Syndicate Heat-List</button>
+        </div>
+
+        <!-- ================= TAB 1: SMS SCANNER ================= -->
+        <div id="tab-sms" class="tab-pane">
+            <div class="grid-2">
+                <div class="cyber-card">
+                    <div class="card-header">
+                        <span class="card-title">📩 Suspicious Message Ingestion</span>
+                        <span class="card-sub">English, Hinglish & Devanagari</span>
+                    </div>
+                    <p class="card-desc">
+                        Paste suspicious SMS or WhatsApp forward. Evaluates psychological urgency cues ("tonight at 9:30 PM"), impersonation of Rajasthan utilities (JVVNL/AVVNL), banks, and extracts unverified phones & hyperlinks.
+                    </p>
+
+                    <div class="presets-box">
+                        <div class="presets-label">⚡ 1-Click Verification Scenarios:</div>
+                        <div class="chips-wrap">
+                            <button onclick="loadSmsPreset('jvvnl')" class="chip chip-warning">⚡ JVVNL Electricity Bill Scam</button>
+                            <button onclick="loadSmsPreset('sbi')" class="chip chip-info">🏦 SBI YONO Suspended KYC</button>
+                            <button onclick="loadSmsPreset('loan')" class="chip chip-danger">💰 ₹5 Lakh Instant Loan Lure</button>
+                            <button onclick="loadSmsPreset('job')" class="chip chip-warning">💼 Telegram Part-Time Task</button>
+                            <button onclick="loadSmsPreset('hindi')" class="chip chip-danger">🇮🇳 Devanagari Hindi Electricity Scam</button>
+                            <button onclick="loadSmsPreset('genuine')" class="chip chip-success">✅ Genuine SBI Balance Alert</button>
+                        </div>
+                    </div>
+
+                    <label>Message Raw Text</label>
+                    <textarea id="smsInput" rows="5" placeholder="Paste incoming message text here..."></textarea>
+                    
+                    <button onclick="analyzeMessage()" class="btn-primary">⚡ Run Forensic Triaging & AI Classification</button>
+                </div>
+
+                <div class="cyber-card" id="smsResultBox">
+                    <div class="placeholder-box">
+                        <div class="placeholder-icon">🛡️</div>
+                        <p>Select a preset scenario on the left or paste a message to view the multi-factor risk breakdown.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 2: URL INSPECTOR ================= -->
+        <div id="tab-url" class="tab-pane hidden">
+            <div class="grid-2">
+                <div class="cyber-card">
+                    <div class="card-header">
+                        <span class="card-title">🔗 Phishing URL & Domain Inspector</span>
+                        <span class="card-sub">Typosquatting, TLDs & Whitelist</span>
+                    </div>
+                    <p class="card-desc">
+                        Inspects suspicious links for disposable high-risk TLDs (.xyz, .top, .cc), deceptive brand impersonation (SBI, JVVNL), unencrypted HTTP connections, and known CERT-In / I4C blacklisted campaigns.
+                    </p>
+
+                    <div class="presets-box">
+                        <div class="presets-label">⚡ 1-Click Domain Test Presets:</div>
+                        <div class="chips-wrap">
+                            <button onclick="loadUrlPreset('sbi_phish')" class="chip chip-danger">sbi-kyc-quickupdate.xyz (Phish)</button>
+                            <button onclick="loadUrlPreset('jvvnl_phish')" class="chip chip-danger">jvvnl-bill-clear.online (Phish)</button>
+                            <button onclick="loadUrlPreset('shortener')" class="chip chip-warning">bit.ly/3AbCdEf (Shortener)</button>
+                            <button onclick="loadUrlPreset('sbi_real')" class="chip chip-success">sbi.co.in (Official SBI)</button>
+                            <button onclick="loadUrlPreset('uidai_real')" class="chip chip-success">uidai.gov.in (Official UIDAI)</button>
+                        </div>
+                    </div>
+
+                    <label>Target URL / Domain</label>
+                    <input type="text" id="urlInput" placeholder="https://example-phishing-link.xyz/login">
+
+                    <button onclick="analyzeUrl()" class="btn-primary">🔍 Inspect Domain Structure & Security IOCs</button>
+                </div>
+
+                <div class="cyber-card" id="urlResultBox">
+                    <div class="placeholder-box">
+                        <div class="placeholder-icon">🌐</div>
+                        <p>Enter a suspicious link or select a preset to begin forensic domain inspection.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 3: APK ANALYZER ================= -->
+        <div id="tab-apk" class="tab-pane hidden">
+            <div class="grid-2">
+                <div class="cyber-card">
+                    <div class="card-header">
+                        <span class="card-title">📱 Android APK Extortion Package Scanner</span>
+                        <span class="card-sub">Static DEX & Manifest Harvester</span>
+                    </div>
+                    <p class="card-desc">
+                        Performs safe static binary inspection of Android packages. Identifies the lethal <b>Predatory Loan App profile</b> (Contacts + SMS + Camera extortion trinity), extracts embedded C2 URLs, and recovery agent numbers without running the malware.
+                    </p>
+
+                    <label>Upload APK for inspection (Max 32MB)</label>
+                    <input type="file" id="apkFileInput" accept=".apk" style="margin-bottom: 12px;">
+
+                    <button onclick="uploadApkFile()" class="btn-primary">📦 Decompile Manifest & Inspect DEX Bytecode</button>
+                </div>
+
+                <div class="cyber-card" id="apkResultBox">
+                    <div class="placeholder-box">
+                        <div class="placeholder-icon">🤖</div>
+                        <p>Upload an APK you are authorized to analyze to inspect static permissions and extracted endpoints.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 4: WEBSITE SCANNER ================= -->
+        <div id="tab-website" class="tab-pane hidden">
+            <div class="grid-2">
+                <div class="cyber-card">
+                    <div class="card-header">
+                        <span class="card-title">🌐 Ponzi, MLM & Illegal Betting Scanner</span>
+                        <span class="card-sub">Financial Destination Miner</span>
+                    </div>
+                    <p class="card-desc">
+                        Scans promotional landing pages for illegal multi-level marketing (MLM), guaranteed daily returns, color prediction / illegal betting platforms, and automatically mines recipient UPI IDs, bank accounts, and crypto wallets.
+                    </p>
+
+                    <div class="presets-box">
+                        <div class="presets-label">⚡ 1-Click Platform Scenarios:</div>
+                        <div class="chips-wrap">
+                            <button onclick="loadWebPreset('daman')" class="chip chip-warning">🎰 Daman Color Prediction & Recharge</button>
+                            <button onclick="loadWebPreset('ponzi')" class="chip chip-danger">📈 10% Daily Guaranteed Crypto Ponzi</button>
+                        </div>
+                    </div>
+
+                    <label>Website URL or Landing Page Copy</label>
+                    <textarea id="webInput" rows="5" placeholder="Enter URL or paste promotional text..."></textarea>
+
+                    <button onclick="analyzeWebsite()" class="btn-primary">💰 Scan For Fraud Patterns & Payment Handles</button>
+                </div>
+
+                <div class="cyber-card" id="webResultBox">
+                    <div class="placeholder-box">
+                        <div class="placeholder-icon">📊</div>
+                        <p>Submit promotional copy to isolate beneficiary mule accounts and illegal gambling triggers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 5: CASE REGISTRY & HEATLIST ================= -->
+        <div id="tab-dashboard" class="tab-pane hidden">
+            <!-- Heatlist Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                <div class="cyber-card" style="border-left: 4px solid #EF4444;">
+                    <div style="font-size: 11px; font-weight: 800; color: #FCA5A5; margin-bottom: 8px;">🚨 TOP SCAM PHONE NUMBERS</div>
+                    <div id="heatPhones" style="display: flex; flex-direction: column; gap: 6px;"></div>
+                </div>
+
+                <div class="cyber-card" style="border-left: 4px solid #F59E0B;">
+                    <div style="font-size: 11px; font-weight: 800; color: #FCD34D; margin-bottom: 8px;">🌐 TOP PHISHING DOMAINS</div>
+                    <div id="heatDomains" style="display: flex; flex-direction: column; gap: 6px;"></div>
+                </div>
+
+                <div class="cyber-card" style="border-left: 4px solid #06B6D4;">
+                    <div style="font-size: 11px; font-weight: 800; color: #67E8F9; margin-bottom: 8px;">💳 TOP FRAUD UPI HANDLES</div>
+                    <div id="heatUpis" style="display: flex; flex-direction: column; gap: 6px;"></div>
+                </div>
+            </div>
+
+            <!-- Case Search & Registry Table -->
+            <div class="cyber-card">
+                <div class="card-header" style="flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <span class="card-title">📂 Police Investigation Case Registry</span>
+                        <div class="card-sub">Click any case row to inspect cross-case syndicate links and Section 63 BSA evidence</div>
+                    </div>
+                    <div style="min-width: 260px;">
+                        <input type="text" id="searchInput" onkeyup="searchCasesLive()" placeholder="Search phone, domain, UPI, case ID...">
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Case Number</th>
+                                <th>Channel</th>
+                                <th>Incident Summary</th>
+                                <th>Risk Assessment</th>
+                                <th>Indexed Identifiers</th>
+                                <th style="text-align: right;">Evidence Dossier</th>
+                            </tr>
+                        </thead>
+                        <tbody id="casesTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Case Detail & Syndicate Modal -->
+    <div id="caseModal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="close-btn" onclick="closeCaseModal()">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript Engine -->
+    <script>
+        // XSS Prevention Helper
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return String(text).replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).classList.add('active');
+            if (tabId === 'tab-dashboard') {
+                refreshHeatlist();
+                searchCasesLive();
+            }
+        }
+
+        // Presets
+        function loadSmsPreset(type) {
+            const presets = {
+                'jvvnl': "Dear Consumer, Your JVVNL Power will be disconnected tonight at 9:30 PM because your previous month bill was not updated. Please immediately contact our Electricity Officer Mr. Verma at 9829012345 or pay via http://jvvnl-bill-clear.online",
+                'sbi': "Dear SBI Customer, your YONO NetBanking account has been suspended due to pending KYC verification. Please click immediately to update PAN card: http://sbi-kyc-quickupdate.xyz/login.php or call 9785123456 to avoid permanent blockage.",
+                'loan': "Congratulations! Pre-approved Instant Personal Loan of Rs 5,00,000 disbursed at 0% interest without CIBIL score. Download CashSpeed APK to claim directly into bank: http://quick-loan-instant-disburse.top/app.apk",
+                'job': "Work From Home Opportunity! Earn daily Rs 2500 - 5000 just by liking YouTube videos and rating hotels on Google. Contact HR Manager on Telegram: @hr_vip_task or WhatsApp: 9123456780. Registration bonus 500 UPI.",
+                'hindi': "प्रिय उपभोक्ता, आपका बिजली बिल बकाया है। आज रात 9:30 बजे बिजली काट दी जाएगी। डिस्कनेक्शन से बचने के लिए तुरंत अधिकारी से 9829012345 पर संपर्क करें।",
+                'genuine': "Your SBI account has been credited with INR 5,000 on 24-Nov-2026. Available balance INR 12,450. - SBI"
+            };
+            document.getElementById('smsInput').value = presets[type] || '';
+        }
+
+        function loadUrlPreset(type) {
+            const presets = {
+                'sbi_phish': "http://sbi-kyc-quickupdate.xyz/login.php",
+                'jvvnl_phish': "http://jvvnl-bill-clear.online",
+                'shortener': "https://bit.ly/3AbCdEf",
+                'sbi_real': "https://sbi.co.in",
+                'uidai_real': "https://uidai.gov.in"
+            };
+            document.getElementById('urlInput').value = presets[type] || '';
+        }
+
+        function loadWebPreset(type) {
+            const presets = {
+                'daman': "Welcome to Daman Games & Color Prediction VIP Club! Win 100% daily returns on color guessing. Guaranteed withdrawal within 5 minutes. Recharge your wallet via UPI: damanvip@ybl or send screenshot to WhatsApp: 9123456780. Level 1 referral income 20%, Level 2 bonus 10%.",
+                'ponzi': "Prime Wealth Global Investment: Earn 10% daily guaranteed profit on your capital with zero risk. Minimum deposit: 500 USDT or Rs 50,000. Transfer to Bank A/c: 918237461928, IFSC: PYTM0123456 or USDT TRC20: TJw5mNB4k9fVbE9yM5zD1a7k2p9xK. Join telegram team to claim VIP bonus."
+            };
+            document.getElementById('webInput').value = presets[type] || '';
+        }
+
+        // Render Result Cards
+        function renderResultCard(data, containerId) {
+            const riskClass = data.risk_level === 'HIGH' ? 'badge-high' : (data.risk_level === 'MEDIUM' ? 'badge-med' : 'badge-low');
+            
+            // Extracted Identifiers badges
+            let idBadges = '';
+            const ids = data.extracted_identifiers || {};
+            const phones = ids.phones || ids.phone_numbers || data.extracted_phones || [];
+            const upis = ids.upi_ids || data.extracted_upis || [];
+            const urls = ids.urls || (data.domain ? [data.domain] : []) || data.extracted_c2_urls || [];
+            const banks = ids.bank_accounts || [];
+
+            phones.forEach(p => idBadges += `<span class="chip chip-danger">📞 ${escapeHtml(p)}</span> `);
+            upis.forEach(u => idBadges += `<span class="chip chip-info">💳 ${escapeHtml(u)}</span> `);
+            urls.forEach(u => idBadges += `<span class="chip chip-warning">🔗 ${escapeHtml(u)}</span> `);
+            banks.forEach(b => idBadges += `<span class="chip chip-success">🏦 ${escapeHtml(b)}</span> `);
+
+            // Forensic Reasons List
+            let reasonsHtml = '';
+            (data.reasons || []).forEach(r => {
+                reasonsHtml += `<li>${escapeHtml(r)}</li>`;
+            });
+
+            // Dangerous Permissions (for APK)
+            let permsHtml = '';
+            if (data.dangerous_permissions && data.dangerous_permissions.length > 0) {
+                let items = '';
+                data.dangerous_permissions.forEach(p => {
+                    items += `<div style="background: #1E293B; padding: 8px; border-radius: 6px; font-size: 11px; margin-bottom: 4px;">
+                        <span style="color: #F87171; font-weight: bold;">${escapeHtml(p.short_name || p.name)}</span> — <span style="color: #CBD5E1;">${escapeHtml(p.label)}</span>
+                        <div style="color: #94A3B8; font-size: 10px; margin-top: 2px;">${escapeHtml(p.desc)}</div>
+                    </div>`;
+                });
+                permsHtml = `
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #1E293B;">
+                    <div style="font-size: 11px; font-weight: bold; color: #F87171; text-transform: uppercase; margin-bottom: 6px;">Intrusive Permissions Detected (${data.dangerous_permissions.length}):</div>
+                    ${items}
+                </div>`;
+            }
+
+            const html = `
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1E293B; padding-bottom: 10px;">
+                        <div>
+                            <span class="${riskClass}">${data.risk_level} RISK (${data.risk_score}/100)</span>
+                            <span style="font-family: monospace; font-size: 11px; color: #94A3B8; margin-left: 8px;">Case: ${escapeHtml(data.case_number || 'N/A')}</span>
+                        </div>
+                        <a href="/api/report/${data.case_id}/pdf" target="_blank" style="padding: 6px 12px; background: #0891B2; color: #FFF; text-decoration: none; border-radius: 6px; font-size: 11px; font-weight: bold;">
+                            📄 Export BSA Sec 63 PDF
+                        </a>
+                    </div>
+
+                    <div style="background: #0B1120; padding: 10px; border-radius: 6px; font-size: 12px; color: #E2E8F0;">
+                        ${escapeHtml(data.summary || 'Threat evaluated.')}
+                    </div>
+
+                    <div>
+                        <div style="font-size: 11px; font-weight: bold; color: #94A3B8; text-transform: uppercase; margin-bottom: 6px;">Extracted Actionable Identifiers:</div>
+                        <div class="chips-wrap">
+                            ${idBadges || '<span style="color: #64748B; font-size: 11px;">No external identifiers extracted.</span>'}
+                        </div>
+                    </div>
+
+                    ${permsHtml}
+
+                    <div>
+                        <div style="font-size: 11px; font-weight: bold; color: #94A3B8; text-transform: uppercase; margin-bottom: 6px;">Forensic Justification Triggers:</div>
+                        <ul class="reasons-list">${reasonsHtml}</ul>
+                    </div>
+                </div>
+            `;
+            document.getElementById(containerId).innerHTML = html;
+        }
+
+        // API Calls
+        async function analyzeMessage() {
+            const text = document.getElementById('smsInput').value.trim();
+            if (!text) return alert("Please enter message text.");
+            document.getElementById('smsResultBox').innerHTML = '<div class="placeholder-box"><p>Running NLP Classification & Hybrid ML Model...</p></div>';
+            
+            const resp = await fetch('/api/analyze/message', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({text: text})
+            });
+            const data = await resp.json();
+            renderResultCard(data, 'smsResultBox');
+        }
+
+        async function analyzeUrl() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) return alert("Please enter a URL.");
+            document.getElementById('urlResultBox').innerHTML = '<div class="placeholder-box"><p>Inspecting Domain Structure, Look-Alikes & Blacklists...</p></div>';
+
+            const resp = await fetch('/api/analyze/url', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({url: url})
+            });
+            const data = await resp.json();
+            renderResultCard(data, 'urlResultBox');
+        }
+
+        async function analyzeApkPreset(sampleName) {
+            document.getElementById('apkResultBox').innerHTML = '<div class="placeholder-box"><p>Decompiling Manifest and DEX Strings for ' + escapeHtml(sampleName) + '...</p></div>';
+
+            const resp = await fetch('/api/analyze/apk', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({sample: sampleName})
+            });
+            const data = await resp.json();
+            renderResultCard(data, 'apkResultBox');
+        }
+
+        async function uploadApkFile() {
+            const fileInput = document.getElementById('apkFileInput');
+            if (!fileInput.files.length) return alert("Please choose an APK file.");
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            document.getElementById('apkResultBox').innerHTML = '<div class="placeholder-box"><p>Uploading & Parsing APK Package...</p></div>';
+
+            const resp = await fetch('/api/analyze/apk', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await resp.json();
+            renderResultCard(data, 'apkResultBox');
+        }
+
+        async function analyzeWebsite() {
+            const input = document.getElementById('webInput').value.trim();
+            if (!input) return alert("Please enter URL or website text.");
+
+            document.getElementById('webResultBox').innerHTML = '<div class="placeholder-box"><p>Analyzing Financial Claims & Extracting Payment Destinations...</p></div>';
+
+            const payload = input.startsWith('http://') || input.startsWith('https://') ? {url: input} : {content: input};
+            const resp = await fetch('/api/analyze/website', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            const data = await resp.json();
+            renderResultCard(data, 'webResultBox');
+        }
+
+        // Heatlist & Registry
+        async function refreshHeatlist() {
+            try {
+                const resp = await fetch('/api/heatlist');
+                const heat = await resp.json();
+                
+                let phoneHtml = '';
+                heat.phones.forEach(p => phoneHtml += `<div style="display:flex; justify-content:space-between; background:#070B14; padding:6px 10px; border-radius:4px; font-size:11px;"><span style="font-family:monospace; color:#FFF;">${escapeHtml(p.value)}</span><span class="badge-high">${p.count} Cases</span></div>`);
+                document.getElementById('heatPhones').innerHTML = phoneHtml || '<div style="color:#64748B; font-size:11px;">No records</div>';
+
+                let domainHtml = '';
+                heat.domains.forEach(d => domainHtml += `<div style="display:flex; justify-content:space-between; background:#070B14; padding:6px 10px; border-radius:4px; font-size:11px;"><span style="font-family:monospace; color:#FFF;">${escapeHtml(d.value)}</span><span class="badge-med">${d.count} Cases</span></div>`);
+                document.getElementById('heatDomains').innerHTML = domainHtml || '<div style="color:#64748B; font-size:11px;">No records</div>';
+
+                let upiHtml = '';
+                heat.upis.forEach(u => upiHtml += `<div style="display:flex; justify-content:space-between; background:#070B14; padding:6px 10px; border-radius:4px; font-size:11px;"><span style="font-family:monospace; color:#FFF;">${escapeHtml(u.value)}</span><span class="badge-low" style="color:#22D3EE; border-color:#0891B2;">${p = u.count} Cases</span></div>`);
+                document.getElementById('heatUpis').innerHTML = upiHtml || '<div style="color:#64748B; font-size:11px;">No records</div>';
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function searchCasesLive() {
+            const q = document.getElementById('searchInput') ? document.getElementById('searchInput').value.trim() : '';
+            const resp = await fetch('/api/cases?q=' + encodeURIComponent(q));
+            const cases = await resp.json();
+            
+            let html = '';
+            cases.forEach(c => {
+                const badgeClass = c.risk_level === 'HIGH' ? 'badge-high' : (c.risk_level === 'MEDIUM' ? 'badge-med' : 'badge-low');
+                html += `
+                <tr onclick="openCaseModal(${c.id})">
+                    <td style="font-family:monospace; font-weight:bold; color:#22D3EE;">${escapeHtml(c.case_number)}</td>
+                    <td><span class="chip" style="font-size:10px;">${escapeHtml(c.source_type)}</span></td>
+                    <td>
+                        <div style="font-weight:600; color:#F8FAFC;">${escapeHtml(c.title)}</div>
+                        <div style="font-size:10px; color:#64748B;">${escapeHtml(c.timestamp)}</div>
+                    </td>
+                    <td><span class="${badgeClass}">${c.risk_level} (${c.risk_score})</span></td>
+                    <td style="font-family:monospace; font-size:11px; color:#94A3B8; max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                        ${escapeHtml(c.linked_entities || 'None')}
+                    </td>
+                    <td style="text-align:right;">
+                        <a href="/api/report/${c.id}/pdf" target="_blank" onclick="event.stopPropagation();" style="padding:4px 8px; background:#083344; color:#38BDF8; border:1px solid #0369A1; border-radius:4px; font-size:11px; text-decoration:none; font-weight:bold;">
+                            📄 PDF
+                        </a>
+                    </td>
+                </tr>`;
+            });
+            document.getElementById('casesTbody').innerHTML = html;
+        }
+
+        // Case Detail & Syndicate Modal (Fix 9)
+        async function openCaseModal(caseId) {
+            const resp = await fetch('/api/cases/' + caseId);
+            if (!resp.ok) return;
+            const c = await resp.json();
+
+            let relatedHtml = '';
+            if (c.related_cases && c.related_cases.length > 0) {
+                c.related_cases.forEach(rel => {
+                    relatedHtml += `
+                    <div style="background:#1E293B; padding:8px 12px; border-radius:6px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <span style="font-family:monospace; color:#22D3EE; font-weight:bold; font-size:11px;">${escapeHtml(rel.case_number)}</span>
+                            <span class="chip" style="font-size:9px; padding:2px 6px;">${escapeHtml(rel.source_type)}</span>
+                            <div style="font-size:11px; color:#E2E8F0; margin-top:2px;">${escapeHtml(rel.title)}</div>
+                        </div>
+                        <span style="font-size:10px; color:#FCA5A5; font-family:monospace;">Shared: ${escapeHtml(rel.shared_entity)}</span>
+                    </div>`;
+                });
+            } else {
+                relatedHtml = '<div style="color:#64748B; font-size:12px;">No cross-case syndicates detected for this artifact yet.</div>';
+            }
+
+            const html = `
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+                    <div>
+                        <div style="font-size:16px; font-weight:800; color:#FFF;">${escapeHtml(c.case_number)}</div>
+                        <div style="font-size:11px; color:#94A3B8;">${escapeHtml(c.source_type)} • ${escapeHtml(c.timestamp)}</div>
+                    </div>
+                    <a href="/api/report/${c.id}/pdf" target="_blank" style="padding:6px 12px; background:#0891B2; color:#FFF; border-radius:6px; font-size:11px; font-weight:bold; text-decoration:none;">
+                        📄 Download Section 63 BSA PDF
+                    </a>
+                </div>
+
+                <div style="margin-bottom:14px;">
+                    <div style="font-size:11px; font-weight:bold; color:#94A3B8; text-transform:uppercase; margin-bottom:4px;">Raw Ingested Evidence:</div>
+                    <div style="background:#070B14; padding:10px; border-radius:6px; font-size:11px; font-family:monospace; color:#CBD5E1; max-height:120px; overflow-y:auto;">
+                        ${escapeHtml(c.raw_data)}
+                    </div>
+                </div>
+
+                <div style="margin-bottom:14px;">
+                    <div style="font-size:11px; font-weight:bold; color:#94A3B8; text-transform:uppercase; margin-bottom:4px;">Cryptographic Checksum (SHA-256):</div>
+                    <div style="font-size:10px; font-family:monospace; color:#38BDF8; word-break:break-all;">${escapeHtml(c.raw_sha256)}</div>
+                </div>
+
+                <div style="margin-bottom:14px;">
+                    <div style="font-size:11px; font-weight:bold; color:#FCA5A5; text-transform:uppercase; margin-bottom:6px;">🔗 Cross-Case Syndicate Linkages (Heat Network):</div>
+                    ${relatedHtml}
+                </div>
+            `;
+            document.getElementById('modalBody').innerHTML = html;
+            document.getElementById('caseModal').style.display = 'flex';
+        }
+
+        function closeCaseModal() {
+            document.getElementById('caseModal').style.display = 'none';
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            refreshHeatlist();
+            searchCasesLive();
+        });
+    </script>
+</body>
+</html>
